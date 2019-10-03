@@ -1,0 +1,26 @@
+---
+name: Playground 🎮
+route: /playground
+---
+
+import { Playground } from "docz";
+import * as ui from "@nordnet/ui";
+
+<!-- workaround for dot-components, like Input,CssGrid etc -->
+
+import { Input, CssGrid, Icon } from "@nordnet/ui";
+
+# Playground
+
+All components are available for live coding inside this playground!
+
+<Playground __scope={{ ...ui }}>
+  <Flexbox container alignItems="center">
+    <Flexbox item>
+      <Input.Text label="All components" extraInfo="are preloaded!" />
+    </Flexbox>
+    <Flexbox item>
+      <Button>Hello</Button>
+    </Flexbox>
+  </Flexbox>
+</Playground>
