@@ -19,7 +19,7 @@ jobs:
     - stage: release
       script:
         - npm run build
-        - npm run publish
+        - npm run gh-publish
       if: (NOT type IN (pull_request)) AND (branch = master)
 
 stages:
