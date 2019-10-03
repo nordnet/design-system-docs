@@ -19,6 +19,7 @@ jobs:
     - stage: release
       script:
         - npm run build
+        - node node_modules/gh-pages/bin/gh-pages-clean
         - npm run gh-publish
       if: (NOT type IN (pull_request)) AND (branch = master)
 
