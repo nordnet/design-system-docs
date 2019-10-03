@@ -1,0 +1,157 @@
+---
+name: CssGrid
+menu: Components
+route: /css-grid
+---
+
+import { Playground, Props } from "docz";
+import { Item, Container, CssGrid, Content } from "./CssGrid.tsx";
+import { theme } from "@nordnet/ui";
+import { ThemeProvider } from "styled-components";
+
+# CssGrid
+
+Super duper component for designing 2-dimensional grids
+Consists of 2 subcomponents: CssGrid.Container & CssGrid.Item
+
+## Properties
+
+### CssGrid.Container
+
+<Props of={Container} />
+
+### CssGrid.Item
+
+<Props of={Item} />
+
+# Grid based on CSS Grid
+
+Use this component when you need a two-dimensional layout model that handles both columns and rows at the same time.
+
+## Areas
+
+CSS Grid can be implemented in several ways but to make it work in all browsers we had to limit ourselves to using the `grid-template-areas` way of defining the grid.
+
+Think of it as visually writing down where you would like your grid items to be placed out and over how many columns they should span.
+
+```jsx
+templateColumns={['100px', '100px', '100px', '100px']}
+areas={[
+    ['header', 'header', 'header', 'header'],
+    ['main',   'main',   'empty',  'sidebar'],
+    ['footer', 'footer', 'footer', 'footer'],
+]}
+```
+
+Also, for this example to work we need to assign each template area to a grid item. These area names needs to be unique in the same grid.
+
+The result is below:
+
+<Playground>
+  <CssGrid.Container
+    templateColumns={["100px", "100px", "100px", "100px"]}
+    areas={[
+      ["header", "header", "header", "header"],
+      ["main", "main", "empty", "sidebar"],
+      ["footer", "footer", "footer", "footer"]
+    ]}
+  >
+    <CssGrid.Item area="header">
+      <Content>Header</Content>
+    </CssGrid.Item>
+    <CssGrid.Item area="main">
+      <Content>Main</Content>
+    </CssGrid.Item>
+    <CssGrid.Item area="sidebar">
+      <Content>Sidebar</Content>
+    </CssGrid.Item>
+    <CssGrid.Item area="footer">
+      <Content>Footer</Content>
+    </CssGrid.Item>
+    <CssGrid.Item area="empty">
+      <Content>Empty</Content>
+    </CssGrid.Item>
+  </CssGrid.Container>
+</Playground>
+
+## TemplateColumns
+
+TemplateColumns takes an array of either numbers or strings. If provided a number then that would be treated as a fraction of a 12 column based grid. So in the example below the middle column would be twice as big as the left and right column.
+
+```jsx
+templateColumns={[3, 6, 3]}
+```
+
+We could aslo pass in pure CSS values and units like so:
+
+```jsx
+templateColumns={['100px', '2fr', '1fr']}
+```
+
+This would resolve in the first column always being resolved to `100px` and the other two columns takes the rest of the available space while still keeping the ratio of middle column being twice the big as the right column.
+
+## TemplateRows
+
+TemplateRows does not have to specified in most cases but if you want to have custom rows then the use it as you're using templateColumns. Default value would be `1fr` times number of rows you have in your grid. However, be careful ⚠️ IE11 doesn't like default value, if you have some extra space hanging around - try 'auto' times number of rows instead.
+
+Example (for 3 rows):
+
+```jsx
+templateRows={['auto', 'auto', 'auto']}
+```
+
+## Gutter
+
+Gutter or the grid gap as it's also called is unit based. This means that whatever number passed into the gutter will be a multiplier for our 4px unit.
+
+```jsx
+gutter={4} // 4 * 4px = 16px;
+```
+
+If you dont specifiy a gutter it will automatically be set to the default `5`.
+
+The gutter can also be different between columns and rows.
+
+```jsx
+gutter={{ row: 6, col: 4 }}
+```
+
+Having a grid without any gutter is also possible by passing it a simple 0.
+
+```jsx
+gutter={0}
+```
+
+## Properties
+
+<Props of={CssGrid} />
+
+## Basic usage
+
+<Playground>
+  <CssGrid.Container
+    areas={[
+      ["header", "header", "header"],
+      ["menu", "Content", "ads"],
+      ["footer", "footer", "footer"]
+    ]}
+    templateColumns={["1fr", "1fr", "1fr"]}
+    templateRows={["1fr", "1fr", "1fr"]}
+  >
+    <CssGrid.Item area="header">
+      <Content>Header</Content>
+    </CssGrid.Item>
+    <CssGrid.Item area="Content">
+      <Content>Content</Content>
+    </CssGrid.Item>
+    <CssGrid.Item area="menu">
+      <Content>Menu</Content>
+    </CssGrid.Item>
+    <CssGrid.Item area="ads">
+      <Content>Ads</Content>
+    </CssGrid.Item>
+    <CssGrid.Item area="footer">
+      <Content>Footer</Content>
+    </CssGrid.Item>
+  </CssGrid.Container>
+</Playground>
