@@ -9,7 +9,8 @@
   "scripts": {
     "dev": "docz dev",
     "build": "docz build",
-    "serve": "docz serve"
+    "serve": "docz serve",
+    "publish": "gh-pages -d .docz/dist --repo https://$GH_TOKEN@github.com/nordnet/design-system-docs.git --silent"
   },
   "dependencies": {
     "@nordnet/ui": "^1.49.1",
