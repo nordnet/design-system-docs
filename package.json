@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "docz dev",
-    "build": "docz build",
+    "build": "DOCZ_BASE=/design-system-docs/ docz build",
     "serve": "docz serve",
     "gh-publish": "gh-pages -d .docz/dist --repo https://$GH_TOKEN@github.com/nordnet/design-system-docs.git"
   },
