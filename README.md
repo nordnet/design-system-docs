@@ -1,2 +1,0 @@
-# design-system-docs
-WIP
