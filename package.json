@@ -13,7 +13,7 @@
     "gh-publish": "gh-pages -d .docz/dist --repo https://$GH_TOKEN@github.com/nordnet/design-system-docs.git"
   },
   "dependencies": {
-    "@nordnet/ui": "^1.51.0",
+    "@nordnet/ui": "^1.51.1",
     "docz": "2.0.0-rc.52",
     "react": "16.9.0",
     "react-dom": "16.9.0"

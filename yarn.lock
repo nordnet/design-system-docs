@@ -1106,10 +1106,10 @@
     "@nodelib/fs.scandir" "2.1.2"
     fastq "^1.6.0"
 
-"@nordnet/ui@^1.51.0":
-  version "1.51.0"
-  resolved "http://nexus3.prod.nordnet.se/repository/npm-public/@nordnet/ui/-/ui-1.51.0.tgz#67c75dcac526540c163488c7789f005f4e52a1a0"
-  integrity sha512-hSW9sCxmzrTZHkxoyfFjVV5UH1yGTNXrCGhs5cH8XEBxLB9vxryqccX7RRQoq4qsKD434AP6502O+8C8xZjOZQ==
+"@nordnet/ui@^1.51.1":
+  version "1.51.1"
+  resolved "https://registry.yarnpkg.com/@nordnet/ui/-/ui-1.51.1.tgz#695c79c242fa8cb34bd95be02287675ffae79743"
+  integrity sha512-Oykfop2nykfn+UJv1JUvOkfLOyRNFpWAhir0U+O2sZj21iVrFp3N30NXnJaLW8osWoch0IKxxNIEVQK345JwwA==
   dependencies:
     color "^3.1.1"
     focus-within-polyfill "^5.0.4"
