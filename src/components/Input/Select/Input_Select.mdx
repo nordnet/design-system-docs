@@ -44,8 +44,14 @@ So much different use-cases, different visuals, different behaviours.
 
 ## Architecture
 
+1. OnChange and value
 1. Customizable reducer (inner behavior)
 1. Customizable renderers (visuals)
+
+
+### OnChange and value
+**value** of the Input.Select is _always_ an array of objects, which corresponds to the `options` you provided to the component. The onChange will be called with the new **value**, again, an array of selected options.
+This allows to have the same api for multi- and single- selects.
 
 ### Behavior:
 
