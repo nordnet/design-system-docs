@@ -1,0 +1,202 @@
+---
+name: Select
+menu: Components/Input
+route: /components/input/select
+---
+
+import { Playground, Props } from "docz";
+import { Select } from "./Input_Select.tsx";
+import { theme, Flexbox, Icon, Input, Link } from "@nordnet/ui";
+import Renderers from "./Renderers.png";
+
+# Input.Select
+
+<Link
+  external
+  to="https://nordnet.github.io/ui/?path=/story/molecules-input-select--default"
+>
+  Storybook
+</Link>
+
+## General Info
+
+There is so much in place when talking about Select component aka Dropdown.
+So much different use-cases, different visuals, different behaviours.
+
+### User stories:
+
+1. When user clicks (or using the keyboard) on some trigger area, some list of items appears
+1. When user clicks outside, list hides
+1. When user hovers/changing focus on items in list, they appears focused
+1. When user presses up/down, the next/previous list item gets highlighted/focused
+1. When user clicks an item in the list, different things can happen:
+   - If the item was selected and this is single select component, do nothing
+   - If the item was selected and this is multi select component, unselect the item
+   - If the item was not selected before and this is single select component, select the item, close the Dropdown
+   - If the item was not selected before and this is multi select component, select the item
+
+### Contexts (where the component can live):
+
+1. Inside a form
+1. Standalone component
+
+### One component simply can't deal with all that complexity. Or can it?
+
+## Architecture
+
+1. Customizable reducer (inner behavior)
+1. Customizable renderers (visuals)
+
+### Behavior:
+
+To be able to manage that complexity, the **reducer** pattern is used in this component.
+Everything is managed through 1 reducer, which is available through `Input.Select.defaults.reducer`.
+Also, default **initialState** is available through `Input.Select.defaults.initialState`.
+
+You can easily redefine this reducer, for example to do multiselect:
+
+<i>(Pay attention that in this example <b>SelectedValue</b> renderer is still showing only first selected value, you will need to redefine that)</i>
+
+<Playground>
+  {() => {
+    const actionTypes = Input.Select.defaults.actionTypes;
+    // useCallback used just to memoize reducer
+    // usually you want to place this code outside of your render function
+    const multiselectReducer = React.useCallback((state, incomingAction) => {
+      if (incomingAction.type === actionTypes["Select.SelectValue"]) {
+        return {
+          ...state,
+          value: [...state.value, incomingAction.payload]
+        };
+      }
+      if (incomingAction.type === "Select.DeselectValue") {
+        return {
+          ...state,
+          value: state.value.filter(x => !Object.is(x, incomingAction.payload))
+        };
+      }
+      return Input.Select.defaults.reducer(state, incomingAction);
+    }, []);
+    return (
+      <Input.Select
+        reducer={multiselectReducer}
+        options={[{ label: "First", value: 1 }, { label: "Second", value: 2 }]}
+        label="Multiselect"
+        width="300px"
+        placeholder="Select account"
+      />
+    );
+  }}
+</Playground>
+
+### Renderers:
+
+<Flexbox container>
+  <Flexbox item>
+    <img src={Renderers} />
+  </Flexbox>
+  <Flexbox item container>
+    <Flexbox container direction="column">
+      <Flexbox item container alignItems="center" gutter={2}>
+        <Icon.SolidCircle color={t => "rgb(255,147,1)"} /> FormField
+      </Flexbox>
+      <Flexbox item container alignItems="center" gutter={2}>
+        <Icon.SolidCircle color={t => "rgb(25,25,255)"} /> SelectedValue
+      </Flexbox>
+      <Flexbox item container alignItems="center" gutter={2}>
+        <Icon.SolidCircle color={t => "rgb(255,25,1)"} /> List
+      </Flexbox>
+      <Flexbox item container alignItems="center" gutter={2}>
+        <Icon.SolidCircle color={t => "rgb(25,100,25)"} /> ListItem
+      </Flexbox>
+    </Flexbox>
+  </Flexbox>
+</Flexbox>
+
+You can redefine `SelectedValue`, `List` and `ListItem` renderers using
+
+```
+
+components
+```
+
+prop.
+
+Every renderer has type:
+
+```typescript
+(props, ref) => JSX.Element;
+```
+
+⚠️ You **must** assign ref to the corresponding node, otherwise you will lose focusing feature
+
+Example:
+
+<Playground>
+  {() => {
+    const ListItemRenderer = React.useCallback(
+      (props, ref) => (
+        <div ref={ref} tabIndex={-1}>
+          Hey there {props.index}
+        </div>
+      ),
+      []
+    );
+    return (
+      <Input.Select
+        components={{
+          ListItem: ListItemRenderer
+        }}
+        options={[{ label: "1", value: 1 }, { label: "2", value: 2 }]}
+      />
+    );
+  }}
+</Playground>
+
+<Link
+  external
+  to="https://nordnet.github.io/ui/?path=/story/molecules-input-select--custom-selectedvalue-and-listitem-renderer"
+>
+  You can find more examples in storybook
+</Link>
+
+You can also _hide_ **FormField** with
+
+```JSX
+noFormField
+```
+
+prop, but then you need to redefine **SelectedValue** renderer
+
+Example:
+
+<Playground>
+  {() => {
+    // useCallback used just to memoize renderer
+    // usually you want to place this code outside of your render function
+    const SelectedValueRenderer = React.useCallback(
+      (props, ref) => (
+        <button ref={ref} tabIndex={-1}>
+          Click to open
+        </button>
+      ),
+      []
+    );
+    return (
+      <Input.Select
+        components={{
+          SelectedValue: SelectedValueRenderer
+        }}
+        noFormField
+        options={[
+          { label: "First item", value: 1 },
+          { label: "Second item", value: 2 }
+        ]}
+      />
+    );
+  }}
+</Playground>
+
+## Props
+
+<Props of={Select} isToggle={false} />
